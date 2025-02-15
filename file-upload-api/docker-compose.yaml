@@ -1,0 +1,12 @@
+services:
+  file-upload-service:
+    build: .
+    ports:
+      - "4000:4000"
+    volumes:
+      - uploads:/usr/src/app/uploads
+    environment:
+      - NODE_ENV=${NODE_ENV}
+
+volumes:
+  uploads:

@@ -1,0 +1,27 @@
+# Rest-api
+
+rest-api/.phpunit.cache
+rest-api/node_modules
+rest-api/public/build
+rest-api/public/hot
+rest-api/public/storage
+rest-api/storage/*.key
+rest-api/vendor
+rest-api/.env
+rest-api/.env.backup
+rest-api/.env.production
+rest-api/.phpunit.result.cache
+rest-api/Homestead.json
+rest-api/Homestead.yaml
+rest-api/auth.json
+rest-api/npm-debug.log
+rest-api/yarn-error.log
+rest-api/.fleet
+rest-api/.idea
+rest-api/.vscode
+
+
+# file-upload-api
+file-upload-api/dist
+file-upload-api/node_modules
+file-upload-api/.env

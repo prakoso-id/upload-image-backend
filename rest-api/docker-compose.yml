@@ -1,0 +1,22 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/var/www
+      - ./storage:/var/www/storage:delegated
+    environment:
+      PHP_MEMORY_LIMIT: 256M
+      PHP_OPCACHE_ENABLE: 1
+      PHP_OPCACHE_MEMORY_CONSUMPTION: 256
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1G

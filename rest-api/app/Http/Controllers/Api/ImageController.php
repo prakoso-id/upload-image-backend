@@ -15,7 +15,7 @@ class ImageController extends Controller {
     // GET: List all images
     public function index(Request $request): JsonResponse {
         $perPage = $request->query('per_page', 10); // Default 10 items per page
-        $images = Image::paginate($perPage);
+        $images = Image::orderBy('created_at', 'desc')->paginate($perPage);
         
         return response()->json([
             'message' => 'Images retrieved successfully',
@@ -43,7 +43,6 @@ class ImageController extends Controller {
                 ->keyBy('id');
             
             $updateBatch = [];
-            $createBatch = [];
             $processedImages = new Collection();
             
             foreach ($request->images as $img) {
@@ -51,8 +50,7 @@ class ImageController extends Controller {
                     'id' => $img['id'],
                     'path' => $img['path'],
                     'label' => $img['label'] ?? null,
-                    'imageUrl' => $img['imageUrl'],
-                    'updated_at' => now(),
+                    'imageUrl' => $img['imageUrl']
                 ];
                 
                 if ($existingImages->has($img['id'])) {
@@ -60,8 +58,9 @@ class ImageController extends Controller {
                     $updateBatch[] = $imageData;
                     $processedImages->push($existingImages->get($img['id']));
                 } else {
-                    $createBatch[] = $imageData;
-                    $processedImages->push(new Image($imageData));
+                    // Create new image using create() to trigger model events
+                    $newImage = Image::create($imageData);
+                    $processedImages->push($newImage);
                 }
             }
             
@@ -70,11 +69,6 @@ class ImageController extends Controller {
                 foreach ($updateBatch as $item) {
                     Image::where('id', $item['id'])->update($item);
                 }
-            }
-            
-            // Bulk create new images
-            if (!empty($createBatch)) {
-                Image::insert($createBatch);
             }
             
             DB::commit();

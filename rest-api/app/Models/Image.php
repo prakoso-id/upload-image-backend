@@ -30,6 +30,18 @@ class Image extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected static function booted()
+    {
+        static::creating(function($model) {
+            $model->created_at = now();
+            $model->updated_at = null;
+        });
+
+        static::updating(function($model) {
+            $model->updated_at = now();
+        });
+    }
+
     /**
      * Prepare a date for array / JSON serialization.
      *

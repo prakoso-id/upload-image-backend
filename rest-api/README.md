@@ -64,3 +64,147 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# Image Upload REST API
+
+A Laravel-based REST API for managing image uploads with support for storing, updating, and retrieving images.
+
+## Features
+
+- Image upload and storage
+- Batch image processing
+- Pagination support
+- RESTful API endpoints
+- JSON responses
+
+## API Documentation
+
+### Base URL
+
+```
+http://localhost:8000/api
+```
+
+### Endpoints
+
+#### 1. List Images
+
+Retrieve a paginated list of images.
+
+```
+GET /images
+```
+
+Query Parameters:
+- `page` (optional): Page number for pagination (default: 1)
+- `per_page` (optional): Number of items per page (default: 10)
+
+Response:
+```json
+{
+    "message": "Images retrieved successfully",
+    "data": [
+        {
+            "id": "string",
+            "path": "string",
+            "label": "string",
+            "imageUrl": "string",
+            "created_at": "timestamp",
+            "updated_at": "timestamp"
+        }
+    ],
+    "meta": {
+        "current_page": 1,
+        "last_page": 5,
+        "per_page": 10,
+        "total": 50
+    }
+}
+```
+
+#### 2. Get Single Image
+
+Retrieve details of a specific image by ID.
+
+```
+GET /images/{id}
+```
+
+Response:
+```json
+{
+    "message": "Image retrieved successfully",
+    "data": {
+        "id": "string",
+        "path": "string",
+        "label": "string",
+        "imageUrl": "string",
+        "created_at": "timestamp",
+        "updated_at": "timestamp"
+    }
+}
+```
+
+#### 3. Store or Update Images
+
+Upload new images or update existing ones in batch.
+
+```
+POST /images
+```
+
+Request Body:
+```json
+{
+    "images": [
+        {
+            "id": "string",
+            "path": "string",
+            "label": "string (optional)",
+            "imageUrl": "string"
+        }
+    ]
+}
+```
+
+Response:
+```json
+{
+    "message": "Images processed successfully",
+    "data": [
+        {
+            "id": "string",
+            "path": "string",
+            "label": "string",
+            "imageUrl": "string",
+            "created_at": "timestamp",
+            "updated_at": "timestamp"
+        }
+    ]
+}
+```
+
+### Error Responses
+
+The API uses standard HTTP status codes and returns error messages in the following format:
+
+```json
+{
+    "message": "Error message",
+    "error": "Detailed error description"
+}
+```
+
+Common status codes:
+- 200: Success
+- 201: Created
+- 404: Not Found
+- 500: Internal Server Error
+
+## Setup and Installation
+
+[Your existing setup instructions here]
+
+## License
+
+[Your license information here]

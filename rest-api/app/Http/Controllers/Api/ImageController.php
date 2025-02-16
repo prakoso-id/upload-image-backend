@@ -13,8 +13,20 @@ use Illuminate\Support\Collection;
 
 class ImageController extends Controller {
     // GET: List all images
-    public function index(): JsonResponse {
-        return response()->json(ImageResource::collection(Image::all()));
+    public function index(Request $request): JsonResponse {
+        $perPage = $request->query('per_page', 10); // Default 10 items per page
+        $images = Image::paginate($perPage);
+        
+        return response()->json([
+            'message' => 'Images retrieved successfully',
+            'data' => ImageResource::collection($images),
+            'meta' => [
+                'current_page' => $images->currentPage(),
+                'last_page' => $images->lastPage(),
+                'per_page' => $images->perPage(),
+                'total' => $images->total()
+            ]
+        ], 200);
     }
 
     // POST: Store multiple images
@@ -84,7 +96,10 @@ class ImageController extends Controller {
     // GET: Show single image
     public function show(string $id): JsonResponse {
         $image = Image::findOrFail($id);
-        return response()->json(new ImageResource($image));
+        return response()->json([
+            'message' => 'Images retrieved successfully',
+            'data' => new ImageResource($image)
+        ], 200);
     }
 
     // DELETE: Soft delete image
@@ -93,7 +108,6 @@ class ImageController extends Controller {
             DB::beginTransaction();
             
             $image = Image::findOrFail($id);
-            Storage::delete($image->path);
             $image->delete();
             
             DB::commit();

@@ -10,6 +10,7 @@ services:
       - "8000:8000"
     volumes:
       - ./:/var/www
+      - /var/www/vendor
       - ./storage:/var/www/storage:delegated
     environment:
       PHP_MEMORY_LIMIT: 256M
